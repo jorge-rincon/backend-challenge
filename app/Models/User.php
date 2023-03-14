@@ -15,11 +15,13 @@ class User extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'id',
         'name',
         'email',
-        'password',
         'city'
     ];
+
+    protected $table = 'users';
 
     /*
      * Get the posts for the user.
@@ -28,4 +30,19 @@ class User extends Model
     {
         return $this->hasMany(Post::class);
     }
+
+    /*
+    * Methods
+    */
+    public function insertUser($users)
+    {
+        return User::firstOrNew([
+            'id' => $users['id'],
+            'name' => $users['name'],
+            'email' => $users['email'],
+            'city' => $users['city'],
+        ]);
+    }
+
+
 }

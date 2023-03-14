@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,5 +14,9 @@ use App\Http\Controllers\PostsController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/posts', [PostsController::class,'getPost']);
+Route::get('/', function () {
+    return view('welcome');
+});
+Route::get('/posts', [PostsController::class,'processingPosts']);
+Route::get('/post-users', [PostsController::class,'getUsersPost']);
+//Route::get('/user', [UserController::class,'getUser']);
