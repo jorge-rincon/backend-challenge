@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\PostsApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostsApiController;
+use App\Http\Controllers\UsersApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});
+});*/
+//rutas para los endpoints users
+Route::apiResource('users', UsersApiController::class);
+//rutas para los endpoints posts
+Route::apiResource('posts', PostsApiController::class)->only(['show']);
+Route::get('/posts/top', 'App\Http\Controllers\PostsApiController@postsTop')->name('posts.top');

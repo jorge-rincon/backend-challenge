@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostsController;
-use App\Http\Controllers\UserController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +19,3 @@ Route::get('/', function () {
 });
 Route::get('/posts', [PostsController::class,'processingPosts']);
 Route::get('/post-users', [PostsController::class,'getUsersPost']);
-//Route::get('/user', [UserController::class,'getUser']);

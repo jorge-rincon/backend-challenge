@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Post extends Model
 {
@@ -38,5 +39,18 @@ class Post extends Model
     public function getUserPost()
     {
         return Post::select('user_id')->distinct()->get();
+    }
+
+    public function getTopUserPost($idUser)
+    {
+        return DB::table('posts as p')
+                   ->where('p.user_id',$idUser)
+                   ->select(DB::raw('max(p.rating),p.id'))
+                   ->get();
+    }
+
+    public function getTopPosts($idsPost)
+    {
+        return Post::with('user')->whereIN('id',$idsPost)->get();
     }
 }
