@@ -38,8 +38,16 @@ class PostsApiController extends Controller
      */
     public function show($id)
     {
-        $postCollection = Post::with('user')->where('id',$id)->get();
+        $postCollection = Post::where('id',$id)->with('user:id,name')->get();
+        
+        if(!isset($postCollection[0]->id)) {
+           return response()->json([
+                        'message'=>'Post not found'
+                    ],404);
+        }
+
         return PostResource::collection($postCollection);
+        
     }
 
     /**
@@ -89,8 +97,7 @@ class PostsApiController extends Controller
                 'user_name'=> $value->user->name,
             ]);
         }
-        $jsonUserTopPosts = json_encode($userTopPosts);
-//        dd($jsonUserTopPosts);
-        return new PostCollection($jsonUserTopPosts);
+       
+        return response()->json($userTopPosts);
     }
 }

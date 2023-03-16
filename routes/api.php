@@ -22,5 +22,5 @@ use App\Http\Controllers\UsersApiController;
 //rutas para los endpoints users
 Route::apiResource('users', UsersApiController::class);
 //rutas para los endpoints posts
-Route::apiResource('posts', PostsApiController::class)->only(['show']);
 Route::get('/posts/top', 'App\Http\Controllers\PostsApiController@postsTop')->name('posts.top');
+Route::apiResource('posts', PostsApiController::class)->only(['show']);
