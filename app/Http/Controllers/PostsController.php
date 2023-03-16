@@ -35,42 +35,63 @@ class PostsController extends Controller
 
     public function processingPosts()
     {   
-        $postModel = new Post();
-        $postsData = $this->getPosts();        
+        try {
 
-        foreach ($postsData as $key => $post) {
-            
-            $numTitle = str_word_count($post['title'],0);
-            $numBody = str_word_count($post['body'],0);
+            $postModel = new Post();
+            $postsData = $this->getPosts();        
 
-            $totalNumTitle = $numTitle * 2;
-            $totalNumBody = $numBody * 1;
-            $rating = $totalNumTitle + $totalNumBody;
-            $post['rating'] = $rating;
-            $post['user_id'] = $post['userId'];
-            unset($post['userId']);
-            
-            $postModel->setPost($post);
-        }        
+            foreach ($postsData as $key => $post) {
+                
+                $numTitle = str_word_count($post['title'],0);
+                $numBody = str_word_count($post['body'],0);
+
+                $totalNumTitle = $numTitle * 2;
+                $totalNumBody = $numBody * 1;
+                $rating = $totalNumTitle + $totalNumBody;
+                $post['rating'] = $rating;
+                $post['user_id'] = $post['userId'];
+                unset($post['userId']);
+                
+                $postModel->setPost($post);
+            }        
+
+            return view('posts.index')->with([
+                'respuesta' => 'Post agregados correctamente.'
+            ]);
         
+        } catch (\Throwable $th) {
+            return view('posts.index')->with([
+                'respuesta' => 'Ah ocurrido un error al agregar los posts.'
+            ]);
+        }
     }
 
     public function getUsersPost()
     {   
-        $postModel = new Post();
-        $userControl = new UserController();
-        $userPostsData = $postModel->getUserPost();
+        try {
+            $postModel = new Post();
+            $userControl = new UserController();
+            $userPostsData = $postModel->getUserPost();
 
-        foreach ($userPostsData as $key => $userPost) {
+            foreach ($userPostsData as $key => $userPost) {
 
-            $usrData = $userControl->getUserById($userPost->user_id);
-            $user['id'] = $usrData['id'];
-            $user['name'] = $usrData['name'];
-            $user['email'] = $usrData['email'];
-            $user['city'] = $usrData['address']["city"];
-            //insertamos registros en la tabla users
-            $userControl->createUser($user);
+                $usrData = $userControl->getUserById($userPost->user_id);
+                $user['id'] = $usrData['id'];
+                $user['name'] = $usrData['name'];
+                $user['email'] = $usrData['email'];
+                $user['city'] = $usrData['address']["city"];
+                //insertamos registros en la tabla users
+                $userControl->createUser($user);
+            }
+
+            return view('posts.index')->with([
+                'respuesta' => 'Usuarios agregados correctamente.'
+            ]);
+
+        } catch (\Throwable $th) {
+            return view('posts.index')->with([
+                'respuesta' => 'Ah ocurrido un error al agregar los posts.'
+            ]);
         }
-
     }
 }
